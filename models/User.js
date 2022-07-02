@@ -38,7 +38,7 @@ const PizzaSchema = new Schema(
     }
 )
 
-// get total count of comments and replies on retrieval
+// get total count of friends on retrieval
 PizzaSchema.virtual('friendCount').get(function() {
     return this.friends.length;
 })
@@ -46,5 +46,5 @@ PizzaSchema.virtual('friendCount').get(function() {
 // create the User model using the UserSchema
 const User = model('User', UserSchema);
 
-// export the Pizza model
+// export the User model
 module.exports = User;

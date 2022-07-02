@@ -1,18 +1,19 @@
 const { Schema, model, Types } = require('mongoose');
 const dateFormat = require('../utils/dateFormat');
 
-const ReplySchema = new Schema(
+const ReactionSchema = new Schema(
     {
-        replyId: {
+        reactionId: {
             type: Schema.Types.ObjectId,
             default: () => new Types.ObjectId()
         },
-        replyBody: {
+        reactionBody: {
             type: String,
             required: true,
-            trim: true
+            trim: true,
+            max: [280, 'Max characters: 280']
         },
-        writtenBy: {
+        username: {
             type: String,
             required: true,
             trim: true
@@ -44,7 +45,7 @@ const ThoughtSchema = new Schema(
             default: Date.now,
             get: createdAtVal => dateFormat(createdAtVal)
         },
-        replies: [ReplySchema]
+        reactions: [ReactionSchema]
     },
     {
         toJSON: {
@@ -55,10 +56,11 @@ const ThoughtSchema = new Schema(
     }
 )
 
-CommentSchema.virtual('replyCount').get(function() {
-    return this.replies.length;
+// get total reactions to a thought on retrieval
+ThoughtSchema.virtual('reactionCount').get(function() {
+    return this.reactions.length;
 })
 
-const Comment = model('Comment', CommentSchema);
+const Thought = model('Thought', ThoughtSchema);
 
-module.exports = Comment;
+module.exports = Thought;
