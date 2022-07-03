@@ -10,7 +10,7 @@ const UserController = {
     },
     // get user by id
     getUserById({params}, res) {
-        User.findOne({_id: params.userId})
+        User.findById({_id: params.userId})
             .populate({
                 path: 'thoughts',
                 select: '-__v'
@@ -33,7 +33,7 @@ const UserController = {
     },
     // update user by id
     updateUser({params, body}, res) {
-        User.findbyIdAndUpdate({_id: params.userId}, body, {new: true})
+        User.findByIdAndUpdate({_id: params.userId}, body, {new: true})
             .then(dbUserData => {
                 // if no users is found, send 404
                 if (!dbUserData) {
@@ -72,6 +72,8 @@ const UserController = {
                     { new: true }
                     )
             })
+            .then(dbUserData => res.json(dbUserData))
+            .catch(err => res.json(err));
     }, 
     // remove friend
     deleteFriend({params}, res) {
@@ -84,10 +86,12 @@ const UserController = {
                 }
                 return User.findByIdAndUpdate(
                     { _id: params.userId },
-                    { $push: {friends: params.friendId} },
+                    { $pull: {friends: params.friendId} },
                     { new: true }
                     )
             })
+            .then(dbUserData => res.json(dbUserData))
+            .catch(err => res.json(err));
     }
 }
 
