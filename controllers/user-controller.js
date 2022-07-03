@@ -74,7 +74,7 @@ const UserController = {
             })
     }, 
     // remove friend
-    removeFriend({params}, res) {
+    deleteFriend({params}, res) {
         User.findById({_id: params.userId})
             .then(dbUserData => {
                 // if no user is found, send 404
