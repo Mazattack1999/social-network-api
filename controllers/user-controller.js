@@ -10,7 +10,7 @@ const UserController = {
     },
     // get user by id
     getUserById({params}, res) {
-        User.findOne({_id: params.id})
+        User.findOne({_id: params.userId})
             .populate({
                 path: 'thoughts',
                 select: '-__v'
@@ -33,7 +33,7 @@ const UserController = {
     },
     // update user by id
     updateUser({params, body}, res) {
-        User.findbyIdAndUpdate({_id: params.id}, body, {new: true})
+        User.findbyIdAndUpdate({_id: params.userId}, body, {new: true})
             .then(dbUserData => {
                 // if no users is found, send 404
                 if (!dbUserData) {
@@ -46,7 +46,7 @@ const UserController = {
     },
     // delete user by id
     deleteUser({params}, res) {
-        User.findByIdAndDelete({_id: params.id})
+        User.findByIdAndDelete({_id: params.userId})
         .then(dbUserData => {
             // if no user is found, send 404
             if (!dbUserData) {
@@ -59,7 +59,7 @@ const UserController = {
     },
     // add friend
     addFriend({params}, res) {
-        User.findById({_id: params.id})
+        User.findById({_id: params.userId})
             .then(dbUserData => {
                 // if no user is found, send 404
                 if (!dbUserData) {
@@ -67,7 +67,7 @@ const UserController = {
                     return;
                 }
                 return User.findByIdAndUpdate(
-                    { _id: params.id },
+                    { _id: params.userId },
                     { $push: {friends: params.friendId} },
                     { new: true }
                     )
@@ -75,7 +75,7 @@ const UserController = {
     }, 
     // remove friend
     removeFriend({params}, res) {
-        User.findById({_id: params.id})
+        User.findById({_id: params.userId})
             .then(dbUserData => {
                 // if no user is found, send 404
                 if (!dbUserData) {
@@ -83,7 +83,7 @@ const UserController = {
                     return;
                 }
                 return User.findByIdAndUpdate(
-                    { _id: params.id },
+                    { _id: params.userId },
                     { $push: {friends: params.friendId} },
                     { new: true }
                     )
