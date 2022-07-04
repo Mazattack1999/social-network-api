@@ -1,4 +1,4 @@
-const { User } = require('../models');
+const { User, Thought } = require('../models');
 
 const UserController = {
     // get all users
@@ -54,6 +54,8 @@ const UserController = {
                 return;
             }
             res.json(dbUserData);
+            // Delete all associated thoughts
+            return Thought.deleteMany({username: dbUserData.username});
         })
         .catch(err => res.status(400).json(err));
     },
